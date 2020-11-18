@@ -31,10 +31,12 @@ def prepare_osz(file: IO[bytes], target_zip: StrPath, mapper_name: str):
         with zipfile.ZipFile(file, "r") as z:
             z.extractall(temp_dir)
 
+        # Filter all files to look for .osu-s.
         diffs = list(filter(lambda x: x.endswith(".osu"), os.listdir(temp_dir)))
         if not diffs:
             raise ValueError("No difficulties found!")
 
+        # Find highest diff in mapset
         # [Diffname, SR, Path, Beatmap]
         highest_diff: List[Union[str, int, Beatmap]] = ["", -1, "", None]
         for diff in diffs:
@@ -46,6 +48,7 @@ def prepare_osz(file: IO[bytes], target_zip: StrPath, mapper_name: str):
             if sr > highest_diff[1]:
                 highest_diff = [bmap.version, sr, diff, bmap]
 
+        # Diffname rule.
         valid_diffnames = ["easy", "normal", "hard", "insane", "expert", "extra"]
         if highest_diff[0].lower() not in valid_diffnames:
             raise ValueError(
@@ -62,6 +65,7 @@ def prepare_osz(file: IO[bytes], target_zip: StrPath, mapper_name: str):
         original_path = os.path.join(temp_dir, highest_diff[2])
         new_path = os.path.join(temp_dir, f"{mapper_name}.osu")
 
+        # An inefficient way to replace mapper name, really.
         fin = open(original_path, "rt")
         fout = open(new_path, "wt")
         for line in fin:

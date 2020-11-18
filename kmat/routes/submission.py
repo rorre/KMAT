@@ -43,6 +43,8 @@ def submit():
     form = EntryForm()
     if form.validate_on_submit():
         f = form.osz.data
+
+        # Generate random filename for original osz file.
         existing_filename = True
         while existing_filename:
             filename = generate_id() + ".osz"
@@ -56,6 +58,7 @@ def submit():
         )
         f.save(path_original)
 
+        # Generate random mapper name for anon judging phase.
         existing_name = True
         while existing_name:
             mapper_anon_name = generate_name()
@@ -82,6 +85,7 @@ def submit():
                 title="Submit",
             )
 
+        # Remove previously submitted entry
         if submitted_entry:
             delete_submission(submitted_entry)
 
