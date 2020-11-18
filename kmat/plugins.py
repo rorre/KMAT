@@ -1,3 +1,5 @@
+import flask
+import flask_login
 from authlib.integrations.flask_client import OAuth
 from flask_admin import Admin
 from flask_login import LoginManager
@@ -18,4 +20,16 @@ login_manager = LoginManager()
 oauth = OAuth()
 admin = Admin(name="KMAT")
 migrate = Migrate()
-login_manager.login_view = "user.login"
+login_manager.login_view = "base.index"
+
+
+# fmt: off
+def requires(*args, **kwargs):
+    def decorator(f):
+        def decorated(*f_args, **f_kwargs):
+            if flask_login.current_user.has_access(*args, **kwargs):
+                return f(*f_args, **f_kwargs)
+            return flask.abort(403)
+        return decorated
+    return decorator
+# fmt: on

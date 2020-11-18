@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% from 'bootstrap/form.html' import render_form %}
+
+{% block header %}
+<div class="py-5 text-center">
+    <h2>Submit</h2>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center pb-3">
+    <div class="col-sm">
+        <div class="card card-body">
+            Kamu dapat mengumpulkan entrymu disini. Namun perlu diingat:
+            <ul>
+                <li>Patuhi semua peraturan dan persyaratan yang ada.
+                    Jika kamu tidak tahu, kamu bisa cek <a href="{{ url_for('base.info') }}">disini</a>.</li>
+                <li>Apabila kamu telah mengumpulkan satu entry, kamu dapat mengumpulkan lagi,
+                    namun entry yang baru akan menimpa entry yang lama, dan entry sebelumnya akan dihapus.</li>
+            </ul>
+            {% if submitted_entry %}
+            <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                <strong>Submitted entry:</strong>
+                {{ submitted_entry.artist }} - {{ submitted_entry.title }} |
+                {{ submitted_entry.difficulty }} | {{ submitted_entry.submitted_at.isoformat(" ") }} UTC
+                <button type="button" class="close" aria-label="Close" title="Hapus entry">
+                    <a href="{{ url_for('submission.remove', submission_id=submitted_entry.id) }}" aria-hidden="true">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </button>
+            </div>
+            {% endif %}
+            {{ render_form(form) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

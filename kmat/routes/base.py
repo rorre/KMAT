@@ -1,7 +1,4 @@
-from flask import (
-    Blueprint,
-    render_template,
-)
+from flask import Blueprint, render_template
 
 blueprint = Blueprint("base", __name__)
 
@@ -13,4 +10,4 @@ def index():
 
 @blueprint.route("/informasi")
 def info():
-    return render_template("pages/information.html")
+    return render_template("pages/information.html", title="Informasi")

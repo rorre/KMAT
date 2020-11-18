@@ -14,6 +14,9 @@ flask-admin = "^1.5.7"
 authlib = "^0.15.2"
 requests = "^2.25.0"
 sentry-sdk = {version = "^0.19.3", extras = ["sentry"]}
+flask-wtf = "^0.14.3"
+slider = "^0.3.1"
+bootstrap-flask = "^1.5.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

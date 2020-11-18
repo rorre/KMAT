@@ -4,6 +4,7 @@ import json
 
 from flask import Flask, flash, redirect, render_template, url_for
 from flask_admin.contrib.sqla import ModelView
+from flask_bootstrap import Bootstrap
 from flask_login import current_user
 
 
@@ -20,31 +21,27 @@ def create_app(config_file="config.json"):
     app = Flask(__name__, static_url_path="/static", static_folder="static")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["TEMPLATES_AUTO_RELOAD"] = True
+    app.config["BOOTSTRAP_BOOTSWATCH_THEME"] = "darkly"
     app.config.from_mapping(data)
 
-    from kmat.plugins import (
-        admin,
-        db,
-        login_manager,
-        oauth,
-        migrate,
-    )
-    from kmat.models import User, Submission, Role
+    from kmat.models import Role, Submission, User
+    from kmat.plugins import admin, db, login_manager, migrate, oauth
 
     admin.init_app(app)
     init_oauth(app, oauth)
     db.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
+    Bootstrap().init_app(app)
 
     admin.add_view(AdminView(User, db.session, endpoint="/user"))
     admin.add_view(AdminView(Submission, db.session, endpoint="/submission"))
     admin.add_view(AdminView(Role, db.session, endpoint="/role"))
 
-    from kmat.routes import base, user
+    from kmat.routes import base, submission, user
 
     app.register_blueprint(base.blueprint)
-    # app.register_blueprint(submission.blueprint)
+    app.register_blueprint(submission.blueprint)
     app.register_blueprint(user.blueprint)
 
     @app.errorhandler(404)
@@ -79,6 +76,7 @@ def fetch_token(name):
 
 def update_token(name, token, refresh_token=None, access_token=None):
     from flask_login import current_user
+
     from kmat.plugins import db
 
     current_user.access_token = token["access_token"]

@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 
+from kmat.helper import generate_id
 from kmat.plugins import db, login_manager
 
 if TYPE_CHECKING:
@@ -28,6 +29,8 @@ class User(BaseModel):
     access_token = db.Column(db.String, nullable=True)
     refresh_token = db.String(length=200)
     expires_at = db.Column(db.Integer)
+    is_active = True
+    is_authenticated = True
 
     @staticmethod
     @login_manager.user_loader
@@ -58,13 +61,19 @@ class User(BaseModel):
 
 
 class Submission(BaseModel):
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    file_path = db.Column(db.String)
+    id = db.Column(db.String, primary_key=True, nullable=False, default=generate_id)
     mapper_id = db.Column(db.Integer, db.ForeignKey("users.osu_uid"), nullable=False)
+
+    # osz
+    file_path = db.Column(db.String)
+    anon_path = db.Column(db.String)
+
+    # Metadata
     artist = db.Column(db.String)
     title = db.Column(db.String)
     difficulty = db.Column(db.String)
     submitted_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    anon_name = db.Column(db.String, unique=True)
 
 
 class Role(BaseModel):
