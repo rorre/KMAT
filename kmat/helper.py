@@ -8,6 +8,7 @@ from typing import IO, List, Union
 
 import slider
 from slider.beatmap import Beatmap
+from slider.beatmap import GameMode
 
 from kmat.constants import ADJECTIVES, ANIMALS
 
@@ -44,9 +45,15 @@ def prepare_osz(file: IO[bytes], target_zip: StrPath, mapper_name: str):
             with open(diff_path, encoding="utf8") as f:
                 bmap = slider.Beatmap.from_file(f)
 
+            if bmap.mode != GameMode.standard:
+                continue
+
             sr = bmap.stars()
             if sr > highest_diff[1]:
                 highest_diff = [bmap.version, sr, diff, bmap]
+
+        if not highest_diff[-1]:
+            raise ValueError("No osu!standard difficulty found.")
 
         # Diffname rule.
         valid_diffnames = ["easy", "normal", "hard", "insane", "expert", "extra"]
