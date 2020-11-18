@@ -49,7 +49,7 @@ def prepare_osz(file: IO[bytes], target_zip: StrPath, mapper_name: str):
         valid_diffnames = ["easy", "normal", "hard", "insane", "expert", "extra"]
         if highest_diff[0].lower() not in valid_diffnames:
             raise ValueError(
-                f"Invalid diffname {highest_diff[0]}. Valid names are {valid_diffnames} (Case-insensitive)"
+                f'Invalid diffname "{highest_diff[0]}". Valid names are {valid_diffnames} (Case-insensitive)'
             )
 
         # Remove all diffs EXCEPT the highest one
