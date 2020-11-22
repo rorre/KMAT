@@ -11,7 +11,7 @@ from wtforms.fields.simple import SubmitField
 
 from kmat.helper import generate_id, generate_name, prepare_osz
 from kmat.models import Submission, User
-from kmat.plugins import db
+from kmat.plugins import db, requires
 
 current_user: User
 blueprint = Blueprint("submission", __name__, url_prefix="/submission")
@@ -34,7 +34,7 @@ def delete_submission(s: Submission):
 
 
 @blueprint.route("/submit", methods=["GET", "POST"])
-@login_required
+@requires("submit")
 def submit():
     submitted_entry: Optional[Submission] = Submission.query.filter_by(
         mapper_id=current_user.osu_uid

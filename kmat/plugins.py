@@ -1,3 +1,4 @@
+from functools import wraps
 import flask
 import flask_login
 from authlib.integrations.flask_client import OAuth
@@ -6,6 +7,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
+
 
 naming_convention = {
     "ix": "ix_%(column_0_label)s",
@@ -24,10 +26,12 @@ login_manager.login_view = "base.index"
 
 
 # fmt: off
-def requires(*args, **kwargs):
+def requires(permission):
     def decorator(f):
+        @wraps(f)
+        @flask_login.login_required
         def decorated(*f_args, **f_kwargs):
-            if flask_login.current_user.has_access(*args, **kwargs):
+            if flask_login.current_user.has_access(permission):
                 return f(*f_args, **f_kwargs)
             return flask.abort(403)
         return decorated

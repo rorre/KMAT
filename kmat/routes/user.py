@@ -1,10 +1,17 @@
 from flask import Blueprint, flash, redirect, session, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 
-from kmat.models import User
+from kmat.models import Role, User
 from kmat.plugins import db, oauth
 
 blueprint = Blueprint("user", __name__, url_prefix="/user")
+default_role: Role = None
+
+
+@blueprint.before_request
+def get_default_role():
+    global default_role
+    default_role = Role.query.get(1)
 
 
 @blueprint.route("/login")
@@ -41,6 +48,7 @@ def authorize():
     this_user.access_token = token["access_token"]
     this_user.refresh_token = token.get("refresh_token")
     this_user.expires_at = token["expires_in"]
+    this_user.roles.append(default_role)
 
     db.session.add(this_user)
     db.session.commit()

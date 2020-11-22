@@ -48,6 +48,13 @@ class User(BaseModel):
             expires_at=self.expires_at,
         )
 
+    def has_access(self, permission):
+        for role in self.roles:
+            if getattr(role, permission):
+                return True
+
+        return False
+
     #########################
     # Site stuffs
     #########################
@@ -78,6 +85,8 @@ class Submission(BaseModel):
 
 class Role(BaseModel):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    role_color = db.Column(db.String(6))
+    name = db.Column(db.String)
+    role_color = db.Column(db.String(6), default="FFFFFF")
     judge = db.Column(db.Boolean, default=False)
     admin = db.Column(db.Boolean, default=False)
+    submit = db.Column(db.Boolean, default=True)
