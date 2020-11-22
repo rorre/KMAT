@@ -1,7 +1,8 @@
 import click
 import os.path
+
 from kmat import create_app
-from kmat.models import Role
+from kmat.models import Role, User
 from kmat.plugins import db
 from flask_migrate import migrate
 
@@ -46,12 +47,46 @@ def setup_roles():
 
 @cli.command()
 @click.pass_context
-def setup_database(ctx):
+def setup_database(ctx: click.Context):
     if os.path.exists("migrations"):
         migrate()
     else:
         db.create_all()
     ctx.invoke(setup_roles)
+
+
+@cli.command()
+@click.argument("user_id", type=int)
+@click.argument("role_id", type=int)
+def set_role(user_id: int, role_id: int):
+    u = User.query.get(user_id)
+    admin_role = Role.query.get(role_id)
+    u.roles.append(admin_role)
+    db.session.commit()
+
+
+@cli.command()
+@click.argument("user_id", type=int)
+@click.pass_context
+def set_admin(user_id: int, ctx: click.Context):
+    admin_role = None
+    temporary_role = None
+
+    role: Role
+    for role in Role.query.all():
+        if role.name == "Admin":
+            admin_role = role
+
+        if role.admin:
+            temporary_role = role
+
+    if not admin_role:
+        if temporary_role:
+            admin_role = temporary_role
+        else:
+            raise ValueError("No admin role found.")
+
+    ctx.invoke(set_role, user_id=user_id, role_id=admin_role.id)
 
 
 if __name__ == "__main__":
