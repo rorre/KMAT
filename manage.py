@@ -9,7 +9,12 @@ app = create_app()
 app.app_context().push()
 
 
-@click.command()
+@click.group()
+def cli():
+    pass
+
+
+@cli.command()
 def setup_roles():
     default_role = Role(judge=False, admin=False, submit=True)
     new_roles = [default_role]
@@ -39,7 +44,7 @@ def setup_roles():
     db.session.commit()
 
 
-@click.command()
+@cli.command()
 @click.pass_context
 def setup_database(ctx):
     if os.path.exists("migrations"):
@@ -50,4 +55,4 @@ def setup_database(ctx):
 
 
 if __name__ == "__main__":
-    setup_database()
+    cli()
