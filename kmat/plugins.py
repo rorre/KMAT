@@ -1,14 +1,14 @@
 from functools import wraps
+
 import flask
 import flask_login
 from authlib.integrations.flask_client import OAuth
 from flask_admin import Admin
+from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
-from flask_debugtoolbar import DebugToolbarExtension
-
 
 naming_convention = {
     "ix": "ix_%(column_0_label)s",

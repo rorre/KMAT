@@ -7,8 +7,7 @@ import zipfile
 from typing import IO, List, Union
 
 import slider
-from slider.beatmap import Beatmap
-from slider.beatmap import GameMode
+from slider.beatmap import Beatmap, GameMode
 
 from kmat.constants import ADJECTIVES, ANIMALS
 

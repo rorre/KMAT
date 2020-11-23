@@ -1,5 +1,6 @@
-from kmat.models import User
 from flask import Blueprint, render_template
+
+from kmat.models import User
 
 blueprint = Blueprint("base", __name__)
 
