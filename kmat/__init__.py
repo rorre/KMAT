@@ -65,11 +65,16 @@ def create_app(config_file="config.json"):
 
 
 class AdminView(ModelView):
+    column_exclude_list = ("access_token",)
+    form_excluded_columns = ("access_token",)
+
     def is_accessible(self):
-        return current_user.is_authenticated and current_user.admin
+        return current_user.is_authenticated and any(
+            [r.admin for r in current_user.roles]
+        )
 
     def inaccessible_callback(self, name, **kwargs):
-        flash("You must be an admin to see this page.", "negative")
+        flash("You must be an admin to see this page.", "error")
         return redirect(url_for("base.index"))
 
 
