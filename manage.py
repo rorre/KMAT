@@ -17,8 +17,10 @@ def cli():
 
 @cli.command()
 def setup_roles():
-    default_role = Role(judge=False, admin=False, submit=True)
-    new_roles = [default_role]
+    default_role = Role(name="Default", submit=True)
+    admin_role = Role(name="Admin", admin=True, submit=False)
+    judge_role = Role(name="Judge", admin=False, judge=True, submit=False)
+    new_roles = [default_role, admin_role, judge_role]
 
     while True:
         if click.confirm("Do you want to create a new role?"):
