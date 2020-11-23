@@ -15,6 +15,30 @@ def cli():
     pass
 
 
+def _create_role() -> Role:
+    name = click.prompt("Role name")
+    color: str = click.prompt("Role color", default="000000")
+    if color.startswith("#"):
+        color = color[1:]
+    click.echo("Would you like it to be able to:")
+    judge = click.prompt(" - Judge", type=bool)
+    admin = click.prompt(" - Administrate", type=bool)
+    submit = click.prompt(" - Submit", type=bool)
+    new_role = Role(
+        name=name,
+        role_color=color,
+        judge=judge,
+        admin=admin,
+        submit=submit,
+    )
+    return new_role
+
+
+@cli.command()
+def create_role():
+    _create_role()
+
+
 @cli.command()
 def setup_roles():
     default_role = Role(name="Default", submit=True)
@@ -24,21 +48,7 @@ def setup_roles():
 
     while True:
         if click.confirm("Do you want to create a new role?"):
-            name = click.prompt("Role name")
-            color: str = click.prompt("Role color", default="000000")
-            if color.startswith("#"):
-                color = color[1:]
-            click.echo("Would you like it to be able to:")
-            judge = click.prompt(" - Judge", type=bool)
-            admin = click.prompt(" - Administrate", type=bool)
-            submit = click.prompt(" - Submit", type=bool)
-            new_role = Role(
-                name=name,
-                role_color=color,
-                judge=judge,
-                admin=admin,
-                submit=submit,
-            )
+            new_role = _create_role()
             new_roles.append(new_role)
         else:
             break
