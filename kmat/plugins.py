@@ -7,6 +7,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
+from flask_debugtoolbar import DebugToolbarExtension
 
 
 naming_convention = {
@@ -23,7 +24,7 @@ oauth = OAuth()
 admin = Admin(name="KMAT")
 migrate = Migrate()
 login_manager.login_view = "base.index"
-
+toolbar = DebugToolbarExtension()
 
 # fmt: off
 def requires(permission):

@@ -51,6 +51,14 @@ client = ["requests"]
 
 [[package]]
 category = "main"
+description = "Fast, simple object-to-object and broadcast signaling"
+name = "blinker"
+optional = false
+python-versions = "*"
+version = "1.4"
+
+[[package]]
+category = "main"
 description = "Bootstrap helper for Flask/Jinja2."
 name = "bootstrap-flask"
 optional = false
@@ -161,6 +169,20 @@ wtforms = "*"
 [package.extras]
 aws = ["boto"]
 azure = ["azure-storage-blob"]
+
+[[package]]
+category = "main"
+description = "A toolbar overlay for debugging Flask applications."
+name = "flask-debugtoolbar"
+optional = false
+python-versions = "*"
+version = "0.11.0"
+
+[package.dependencies]
+Blinker = "*"
+Flask = ">=0.8"
+itsdangerous = "*"
+werkzeug = "*"
 
 [[package]]
 category = "main"
@@ -608,7 +630,7 @@ ipaddress = ["ipaddress"]
 locale = ["Babel (>=1.3)"]
 
 [metadata]
-content-hash = "c320ba615cbaea1a7f45fe4b6cffbd3bff17b29d3de0200d7a72dfb4b489570f"
+content-hash = "6a90dba7df881c3d18cc3c5225753c40d7a51157de0dbc8346099b1931553bc5"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -627,6 +649,9 @@ attrs = [
 authlib = [
     {file = "Authlib-0.15.2-py2.py3-none-any.whl", hash = "sha256:078b900fa9fbebf9f8dae1d5dc1ca857b6a742493093ef9b0b36ad926f36e41f"},
     {file = "Authlib-0.15.2.tar.gz", hash = "sha256:21b34625c83ca48150684bbeca8f7c884cd281913c72d146dbf0e9d2fbfdec4e"},
+]
+blinker = [
+    {file = "blinker-1.4.tar.gz", hash = "sha256:471aee25f3992bd325afa3772f1063dbdbbca947a041b8b89466dc00d606f8b6"},
 ]
 bootstrap-flask = [
     {file = "Bootstrap-Flask-1.5.1.tar.gz", hash = "sha256:4813ab4b7cd35fe16ebd15789b4edb45ed6e528c8eb6f44790efba48e8410ebc"},
@@ -715,6 +740,10 @@ flask = [
 ]
 flask-admin = [
     {file = "Flask-Admin-1.5.7.tar.gz", hash = "sha256:145f59407d78319925e20f7c3021f60c71f0cacc98e916e52000845dc4c63621"},
+]
+flask-debugtoolbar = [
+    {file = "Flask-DebugToolbar-0.11.0.tar.gz", hash = "sha256:3c4e79d354ede014e6657c545a536d4fb273cc89e3fd6b4835b02e346dd3aab4"},
+    {file = "Flask_DebugToolbar-0.11.0-py2.py3-none-any.whl", hash = "sha256:0e9a80d4c599233c68376e81cc99976200b5ac5248cfb24f18935cc5b69ac5b3"},
 ]
 flask-login = [
     {file = "Flask-Login-0.5.0.tar.gz", hash = "sha256:6d33aef15b5bcead780acc339464aae8a6e28f13c90d8b1cf9de8b549d1c0b4b"},

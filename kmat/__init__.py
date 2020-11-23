@@ -25,7 +25,7 @@ def create_app(config_file="config.json"):
     app.config.from_mapping(data)
 
     from kmat.models import Role, Submission, User
-    from kmat.plugins import admin, db, login_manager, migrate, oauth
+    from kmat.plugins import admin, db, login_manager, migrate, oauth, toolbar
 
     admin.init_app(app)
     init_oauth(app, oauth)
@@ -33,6 +33,7 @@ def create_app(config_file="config.json"):
     login_manager.init_app(app)
     migrate.init_app(app, db, render_as_batch=True)
     Bootstrap().init_app(app)
+    toolbar.init_app(app)
 
     admin.add_view(AdminView(User, db.session, endpoint="/user"))
     admin.add_view(AdminView(Submission, db.session, endpoint="/submission"))
