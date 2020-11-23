@@ -36,7 +36,9 @@ def _create_role() -> Role:
 
 @cli.command()
 def create_role():
-    _create_role()
+    role = _create_role()
+    db.session.add(role)
+    db.session.commit()
 
 
 @cli.command()
