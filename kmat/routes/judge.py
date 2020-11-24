@@ -17,6 +17,7 @@ def listing():
         for judging in s.judgings:
             if judging.judge.osu_uid == current_user.osu_uid:
                 s.has_judged = True
+                s.my_judging = judging
 
     return render_template("pages/judge/listing.html", submissions=submissions)
 
@@ -36,6 +37,8 @@ def judge(submission_id: str):
             judge=current_user,
             comment=js["comment"],
         )
+    else:
+        judging_obj.comment = js["comment"]
 
     scores = []
     score: Dict[str, Union[str, int]]
@@ -53,14 +56,14 @@ def judge(submission_id: str):
 
         if score_obj:
             # If it exists, then just update it
-            for key, value in score.iteritems():
+            for key, value in score.items():
                 setattr(score_obj, key, value)
         else:
             # Else, create a new object.
             score["judging"] = judging_obj
             score_obj = Score(**score)
 
-        scores[score["name"]] = score_obj
+        scores.append(score_obj)
 
     db.session.add_all(scores)
     db.session.commit()
