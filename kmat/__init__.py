@@ -39,9 +39,10 @@ def create_app(config_file="config.json"):
     admin.add_view(AdminView(Submission, db.session, endpoint="/submission"))
     admin.add_view(AdminView(Role, db.session, endpoint="/role"))
 
-    from kmat.routes import base, submission, user
+    from kmat.routes import base, submission, user, judge
 
     app.register_blueprint(base.blueprint)
+    app.register_blueprint(judge.blueprint)
     app.register_blueprint(submission.blueprint)
     app.register_blueprint(user.blueprint)
 
