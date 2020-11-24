@@ -1,8 +1,10 @@
-from typing import List
-from flask import Blueprint, render_template
+from kmat.models.submission import Judging, Score
+from typing import Any, Dict, List, Union
+from flask import Blueprint, render_template, request
 from flask_login import current_user
 
 from kmat.models import Submission
+from kmat.plugins import db
 
 blueprint = Blueprint("judge", __name__, url_prefix="/judge")
 
@@ -17,3 +19,45 @@ def listing():
                 s.has_judged = True
 
     return render_template("pages/judge/listing.html", submissions=submissions)
+
+
+@blueprint.route("/<submission_id>", methods=["POST"])
+def judge(submission_id: str):
+    js: Dict[str, Any] = request.get_json()
+
+    submission: Submission = Submission.query.get(submission_id)
+    judging_obj: Judging = Judging.query.filter_by(
+        submission_id=submission_id, judge_id=current_user.osu_uid
+    ).one_or_none()
+
+    if not judging_obj:
+        judging_obj = Judging(
+            submission=submission,
+            judge=current_user,
+            comment=js["comment"],
+        )
+
+    scores = []
+    score: Dict[str, Union[str, int]]
+    for score in js["scores"]:
+        # Check for existing criteria scoring
+        score_obj = Score.query.filter_by(
+            judging_id=judging_obj.id,
+            criteria=score["criteria"],
+        ).one_or_none()
+
+        if score_obj:
+            # If it exists, then just update it
+            for key, value in score.iteritems():
+                setattr(score_obj, key, value)
+        else:
+            # Else, create a new object.
+            score["judging"] = judging_obj
+            score_obj = Score(**score)
+
+        scores.append(score_obj)
+
+    db.session.add_all(scores)
+    db.session.commit()
+
+    return {"message": "OK"}

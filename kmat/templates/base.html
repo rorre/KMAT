@@ -19,6 +19,7 @@
     {% block scripts %}
     {{ bootstrap.load_js() }}
     <script src="https://kit.fontawesome.com/f7639dc419.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     {% endblock %}
 
     <style>
@@ -74,7 +75,9 @@
 
     <main class="container">
         {% block header %}{% endblock %}
-        {{ render_messages() }}
+        <div id="flash">
+            {{ render_messages() }}
+        </div>
         {% block content %}{% endblock %}
     </main>
 </body>

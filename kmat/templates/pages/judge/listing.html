@@ -5,9 +5,12 @@
     <label class="sr-only" for="{{ id }}">{{ name }}</label>
     <div class="input-group mb-2">
         <input type="number" step="0.01" min="0" max="{{ max_score }}" name="{{ id }}" class="form-control"
-            id="{{ id }}" placeholder="{{ name }}">
+            id="{{ id }}" placeholder="{{ name }}" required>
         <div class="input-group-append">
             <div class="input-group-text">/ {{ max_score }}</div>
+        </div>
+        <div class="invalid-feedback">
+            Input must be in range 0-30.
         </div>
     </div>
 </div>
@@ -25,7 +28,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <a href="{{ url_for('base.cdn', filename=submission.anon_path[1:]) | unquote }}">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    Download submission
+                </a>
+                <form class="needs-validation" novalidate>
+                    <input type="hidden" name="submissionId" value="{{ submission.id }}">
                     <div class="form-row">
                         {{ render_input("Musical Representation", "musicRepr") }}
                         {{ render_input("Gameplay", "gameplay") }}
@@ -41,7 +49,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-primary save-button">Save</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -63,6 +71,7 @@
         <li class="list-group-item d-flex justify-content-between align-items-center modal-opener" data-toggle="modal"
             data-target="#modal{{ loop.index0 }}">
             {{ s.anon_name }} -- {{ s.difficulty }}
+
             <span class="badge badge-{{ level }} badge-pill">
                 {% if not s.has_judged %}
                 Not judged
@@ -79,4 +88,6 @@
 {% set i = loop.index0 | string %}
 {{ render_modal(s, "modal" + i) }}
 {% endfor %}
+
+<script src="/static/judging.js"></script>
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, send_from_directory, current_app
 
 from kmat.models import User
 
@@ -25,3 +25,8 @@ def staff():
         staffs=staffs,
         judges=judges,
     )
+
+
+@blueprint.route("/data/<path:filename>")
+def cdn(filename):
+    return send_from_directory(current_app.config["DATA_PATH"], filename)

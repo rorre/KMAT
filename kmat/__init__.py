@@ -7,6 +7,8 @@ from flask_admin.contrib.sqla import ModelView
 from flask_bootstrap import Bootstrap
 from flask_login import current_user
 
+from urllib.parse import unquote
+
 
 def create_app(config_file="config.json"):
     with open(config_file, "r") as f:
@@ -34,6 +36,8 @@ def create_app(config_file="config.json"):
     migrate.init_app(app, db, render_as_batch=True)
     Bootstrap().init_app(app)
     toolbar.init_app(app)
+
+    app.jinja_env.filters["unquote"] = unquote
 
     admin.add_view(AdminView(User, db.session, endpoint="/user"))
     admin.add_view(AdminView(Submission, db.session, endpoint="/submission"))

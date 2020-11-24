@@ -43,6 +43,7 @@ def submit():
     form = EntryForm()
     if form.validate_on_submit():
         f = form.osz.data
+        data_path = current_app.config.get("DATA_PATH", current_app.instance_path)
 
         # Generate random filename for original osz file.
         existing_filename = True
@@ -52,7 +53,7 @@ def submit():
                 existing_filename = False
 
         path_original = os.path.join(
-            current_app.config.get("DATA_PATH", current_app.instance_path),
+            data_path,
             "osz-original",
             filename,
         )
@@ -66,7 +67,7 @@ def submit():
                 existing_name = False
 
         path_modified = os.path.join(
-            current_app.config.get("DATA_PATH", current_app.instance_path),
+            data_path,
             "osz",
             mapper_anon_name + ".osz",
         )
@@ -90,8 +91,9 @@ def submit():
             delete_submission(submitted_entry)
 
         submission = Submission(
-            file_path=path_original,
-            anon_path=path_modified,
+            # We don't need to know the absolute path of the file.
+            file_path=path_original.replace(data_path, ""),
+            anon_path=path_modified.replace(data_path, ""),
             mapper=current_user,
             artist=artist,
             title=title,
