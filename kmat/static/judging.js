@@ -27,12 +27,13 @@ $(".save-button").on('click', function () {
             formJSON.comment = element.value;
             return;
         }
+        if (element.name == "submissionId") return;
         formJSON['scores'].push(element);
     });
 
     var submissionid = $form.find("input[name='submissionId']").val();
-    $.post("/" + submissionid, formJSON, function (data, status, xhr) {
-        if (status != "success") {
+    axios.post(submissionid, formJSON).then(function (response) {
+        if (response.status != 200) {
             flash("An error has occured.", "danger");
         }
 
