@@ -43,7 +43,7 @@ class Judging(BaseModel):
         "Score",
         backref="judging",
         lazy=True,
-        collection_class=attribute_mapped_collection("criteria"),
+        collection_class=attribute_mapped_collection("criteria.value"),
     )
 
     submission_id = db.Column(
