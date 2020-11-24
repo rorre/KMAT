@@ -1,4 +1,4 @@
-from kmat.models.submission import Judging, Score
+from kmat.models.submission import CriteriaEnum, Judging, Score
 from typing import Any, Dict, List, Union
 from flask import Blueprint, render_template, request
 from flask_login import current_user
@@ -40,6 +40,11 @@ def judge(submission_id: str):
     scores = []
     score: Dict[str, Union[str, int]]
     for score in js["scores"]:
+        score["criteria"] = CriteriaEnum(score["name"])
+        score["score"] = score["value"]
+        del score["name"]
+        del score["value"]
+
         # Check for existing criteria scoring
         score_obj = Score.query.filter_by(
             judging_id=judging_obj.id,
