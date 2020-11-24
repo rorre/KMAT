@@ -4,21 +4,9 @@
 <div class="col">
     <label class="sr-only" for="{{ id }}">{{ name }}</label>
     <div class="input-group mb-2">
-        <input
-            type="number"
-            step="0.01"
-            min="0"
-            max="{{ max_score }}"
-            name="{{ id }}"
-            class="form-control"
-            id="{{ id }}"
-            placeholder="{{ name }}"
-
-            {% if submission.has_judged and id in submission.my_judging.scores %}
-            value="{{ submission.my_judging.scores[id].score }}"
-            {% endif %}
-
-            required>
+        <input type="number" step="0.01" min="0" max="{{ max_score }}" name="{{ id }}" class="form-control"
+            id="{{ id }}" placeholder="{{ name }}" {% if submission.has_judged and id in submission.my_judging.scores %}
+            value="{{ submission.my_judging.scores[id].score }}" {% endif %} required>
         <div class="input-group-append">
             <div class="input-group-text">/ {{ max_score }}</div>
         </div>
@@ -63,17 +51,8 @@
 
                     <div class="form-row">
                         <label for="commentArea">Overall Comment</label>
-                        <textarea
-                            class="form-control"
-                            id="commentArea"
-                            name="comment"
-                            
-                            {% if submission.has_judged %}
-                            value="{{ submission.my_judging.comment }}"
-                            {% endif %}
-
-                            rows="5">
-                        </textarea>
+                        <textarea class="form-control" id="commentArea" name="comment"
+                            rows="5">{% if submission.has_judged %}{{ submission.my_judging.comment }}{% endif %}</textarea>
                     </div>
                 </form>
             </div>
