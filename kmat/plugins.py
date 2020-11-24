@@ -26,6 +26,7 @@ migrate = Migrate()
 login_manager.login_view = "base.index"
 toolbar = DebugToolbarExtension()
 
+
 # fmt: off
 def requires(permission):
     def decorator(f):

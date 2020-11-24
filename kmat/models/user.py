@@ -1,7 +1,5 @@
-from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import List, TYPE_CHECKING
 
-from kmat.helper import generate_id
 from kmat.plugins import db, login_manager
 
 if TYPE_CHECKING:
@@ -65,22 +63,7 @@ class User(BaseModel):
         backref=db.backref("users", lazy=True),
     )
     submissions = db.relationship("Submission", backref="mapper", lazy=True)
-
-
-class Submission(BaseModel):
-    id = db.Column(db.String, primary_key=True, nullable=False, default=generate_id)
-    mapper_id = db.Column(db.Integer, db.ForeignKey("users.osu_uid"), nullable=False)
-
-    # osz
-    file_path = db.Column(db.String)
-    anon_path = db.Column(db.String)
-
-    # Metadata
-    artist = db.Column(db.String)
-    title = db.Column(db.String)
-    difficulty = db.Column(db.String)
-    submitted_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    anon_name = db.Column(db.String, unique=True)
+    judgings = db.relationship("Judging", backref="judge", lazy=True)
 
 
 class Role(BaseModel):
@@ -90,3 +73,4 @@ class Role(BaseModel):
     judge = db.Column(db.Boolean, default=False)
     admin = db.Column(db.Boolean, default=False)
     submit = db.Column(db.Boolean, default=True)
+    users: List[User]
