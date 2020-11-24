@@ -1,6 +1,7 @@
 from typing import List, TYPE_CHECKING
 
 from kmat.plugins import db, login_manager
+from sqlalchemy.orm.collections import attribute_mapped_collection
 
 if TYPE_CHECKING:
     from flask_sqlalchemy.model import Model
@@ -61,6 +62,7 @@ class User(BaseModel):
         secondary=role_association,
         lazy="subquery",
         backref=db.backref("users", lazy=True),
+        collection_class=attribute_mapped_collection("name"),
     )
     submissions = db.relationship("Submission", backref="mapper", lazy=True)
     judgings = db.relationship("Judging", backref="judge", lazy=True)

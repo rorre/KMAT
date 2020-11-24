@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 
 import enum
 from sqlalchemy.sql.sqltypes import Enum
+from sqlalchemy.orm.collections import attribute_mapped_collection
 from kmat.helper import generate_id
 from kmat.plugins import db
 
@@ -38,7 +39,12 @@ class Judging(BaseModel):
     judge: "User"
 
     comment = db.Column(db.String, nullable=True)
-    scores = db.relationship("Score", backref="judging", lazy=True)
+    scores = db.relationship(
+        "Score",
+        backref="judging",
+        lazy=True,
+        collection_class=attribute_mapped_collection("criteria"),
+    )
 
     submission_id = db.Column(
         db.Integer, db.ForeignKey("submission.id"), nullable=False
