@@ -60,7 +60,7 @@ def judge(submission_id: str):
             score["judging"] = judging_obj
             score_obj = Score(**score)
 
-        scores.append(score_obj)
+        scores[score["name"]] = score_obj
 
     db.session.add_all(scores)
     db.session.commit()
