@@ -37,7 +37,7 @@ class Judging(BaseModel):
     submission: "Submission"
     judge: "User"
 
-    comment = db.Column(db.String)
+    comment = db.Column(db.String, nullable=True)
     scores = db.relationship("Score", backref="judging", lazy=True)
 
     submission_id = db.Column(
