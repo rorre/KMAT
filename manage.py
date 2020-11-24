@@ -82,7 +82,7 @@ def set_role(user_id: int, role_id: int):
 @cli.command()
 @click.argument("user_id", type=int)
 @click.pass_context
-def set_admin(user_id: int, ctx: click.Context):
+def set_admin(ctx: click.Context, user_id: int):
     admin_role = None
     temporary_role = None
 
