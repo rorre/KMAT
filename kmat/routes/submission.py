@@ -36,11 +36,12 @@ class EntryForm(FlaskForm):
 
 
 def delete_submission(s: Submission):
+    data_path = current_app.config.get("DATA_PATH", current_app.instance_path)
     db.session.delete(s)
     db.session.commit()
 
-    os.remove(s.anon_path)
-    os.remove(s.file_path)
+    os.remove(os.path.join(data_path, s.anon_path))
+    os.remove(os.path.join(data_path, s.file_path))
 
 
 @blueprint.route("/submit", methods=["GET", "POST"])
