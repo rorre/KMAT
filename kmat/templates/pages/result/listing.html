@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% macro render_modal(submission, id) -%}
+<div class="modal fade" id="{{ id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">{{ submission.mapper.username }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <a href="{{ url_for('base.cdn', filename=submission.anon_path[1:]) | unquote }}">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    Download submission
+                </a>
+
+                {% for judging in submission.judgings %}
+                <div>
+                    <strong>{{ judging.judge.username }}</strong>
+                    <ul>
+                        {% for score in judging.scores.values() %}
+                        <li>{{ score.criteria.name }} ({{ score.score }})</li>
+                        {% endfor %}
+                    </ul>
+                    <p class="mb-0">Comment:</p>
+                    <div class="card card-body">{{ judging.comment }}</div>
+                </div>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{%- endmacro %}
+
+{% block header %}
+<div class="py-5 text-center">
+    <h2>Results</h2>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row pb-3">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Mapper</th>
+                    <th scope="col">Musical Representation</th>
+                    <th scope="col">Gameplay</th>
+                    <th scope="col">Creativity</th>
+                    <th scope="col">Hitsound</th>
+                    <th scope="col">Total Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in submissions %}
+                <tr class="modal-opener" data-toggle="modal" data-target="#modal{{ loop.index0 }}">
+                    <td>{{ loop.index }}</td>
+                    <td>{{ s.mapper.username }}</td>
+                    <td>{{ s.criteria_scores["musicRepr"] }}</td>
+                    <td>{{ s.criteria_scores["gameplay"] }}</td>
+                    <td>{{ s.criteria_scores["creativity"] }}</td>
+                    <td>{{ s.criteria_scores["hitsound"] }}</td>
+                    <td>{{ s.score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% for s in submissions %}
+{% set i = loop.index0 | string %}
+{{ render_modal(s, "modal" + i) }}
+{% endfor %}
+
+{% endblock %}

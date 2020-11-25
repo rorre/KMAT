@@ -43,12 +43,13 @@ def create_app(config_file="config.json"):
     admin.add_view(AdminView(Submission, db.session, endpoint="/submission"))
     admin.add_view(AdminView(Role, db.session, endpoint="/role"))
 
-    from kmat.routes import base, submission, user, judge
+    from kmat.routes import base, submission, user, judge, results
 
     app.register_blueprint(base.blueprint)
     app.register_blueprint(judge.blueprint)
     app.register_blueprint(submission.blueprint)
     app.register_blueprint(user.blueprint)
+    app.register_blueprint(results.blueprint)
 
     @app.errorhandler(403)
     def unauthorized(e):

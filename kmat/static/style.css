@@ -23,6 +23,21 @@ h5 {
     cursor: pointer;
 }
 
+.modal .card {
+    background-color: #1f1d24;
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.75);
+}
+
+.modal hr {
+    border-top: 1px solid rgba(30, 30, 30, 0.75);
+}
+
 /* The following code was taken from
    https://bootsnipp.com/snippets/xrKXW */
 ul.timeline {

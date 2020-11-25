@@ -37,7 +37,9 @@ def listing():
                 s.has_judged = True
                 s.my_judging = judging
 
-    return render_template("pages/judge/listing.html", submissions=submissions)
+    return render_template(
+        "pages/judge/listing.html", submissions=submissions, title="Judge"
+    )
 
 
 @blueprint.route("/<submission_id>", methods=["POST"])
