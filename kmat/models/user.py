@@ -64,7 +64,7 @@ class User(BaseModel):
     roles = db.relationship(
         "Role",
         secondary=role_association,
-        lazy=True,
+        lazy=False,
         backref=db.backref("users", lazy=False),
         collection_class=attribute_mapped_collection("name"),
     )
