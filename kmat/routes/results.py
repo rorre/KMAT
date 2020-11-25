@@ -1,6 +1,4 @@
-from typing import List
-
-from flask import Blueprint, abort, render_template
+from flask import Blueprint, abort, render_template, request
 from flask.globals import current_app
 from flask_login import current_user
 from kmat.models import Submission
@@ -11,16 +9,22 @@ blueprint = Blueprint("result", __name__, url_prefix="/result")
 
 @blueprint.before_request
 def check_access():
+    if not current_user.is_authenticated:
+        return abort(401)
+
     if not current_user.has_access("admin") and current_app.config["STATUS"] != "end":
         abort(403)
 
 
 @blueprint.route("/")
 def listing():
-    submissions: List[Submission] = Submission.query.all()
+    page = request.args.get("page", 1, type=int)
+    submissions = Submission.query.order_by(Submission.total_score.desc()).paginate(
+        page, 10
+    )
     judges = Role.query.filter_by(judge=True).first().users
 
-    for s in submissions:
+    for s in submissions.items:
         score = 0.0
         criteria_scores = {
             "musicRepr": 0,
@@ -36,10 +40,8 @@ def listing():
             checked_judges.append(j.judge)
 
         s.missing_judges = set(judges) - set(checked_judges)
-        s.score = sum(criteria_scores.values())
         s.criteria_scores = criteria_scores
 
-    submissions.sort(key=lambda x: x.score, reverse=True)
     return render_template(
         "pages/result/listing.html",
         submissions=submissions,
