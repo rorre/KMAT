@@ -75,7 +75,7 @@ class AdminView(ModelView):
 
     def is_accessible(self):
         return current_user.is_authenticated and any(
-            [r.admin for r in current_user.roles]
+            [r.admin for r in current_user.roles.values()]
         )
 
     def inaccessible_callback(self, name, **kwargs):
