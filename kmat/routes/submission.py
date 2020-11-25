@@ -2,7 +2,7 @@ import os
 import traceback
 from typing import Optional
 
-from flask import Blueprint, current_app, redirect, render_template, url_for
+from flask import Blueprint, current_app, redirect, render_template, url_for, abort
 from flask.helpers import flash
 from flask_login import current_user, login_required
 from flask_wtf import FlaskForm
@@ -15,6 +15,16 @@ from kmat.plugins import db, requires
 
 current_user: User
 blueprint = Blueprint("submission", __name__, url_prefix="/submission")
+
+
+@blueprint.before_request
+def check_access():
+    if not current_user.has_access("admin"):
+        if not current_user.has_access("submit"):
+            return abort(403)
+        if current_app.config["STATUS"] != "mapping":
+            flash("It is not mapping phase.")
+            return redirect(url_for("base.index"))
 
 
 class EntryForm(FlaskForm):
