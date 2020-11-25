@@ -22,6 +22,11 @@ def check_access():
             return redirect(url_for("base.index"))
 
 
+@blueprint.app_errorhandler(500)
+def handle_error(e):
+    return {"error": True, "message": str(e)}, 500
+
+
 @blueprint.route("/")
 def listing():
     submissions: List[Submission] = Submission.query.all()
@@ -81,4 +86,4 @@ def judge(submission_id: str):
     db.session.add_all(scores)
     db.session.commit()
 
-    return {"message": "OK"}
+    return {"error": False, "message": "OK"}

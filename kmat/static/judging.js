@@ -41,10 +41,13 @@ $(".save-button").on('click', function (event) {
     var submissionid = $form.find("input[name='submissionId']").val();
     axios.post(submissionid, formJSON)
         .then(function () { flash("Done!"); })
-        .catch(function (response) {
-            if (response.status != 200) {
-                flash("An error has occured.", "danger");
+        .catch(function (error) {
+            if (error.response) {
+                flash("An error has occured.", "danger")
+            } else {
+                flash(error.message, "danger");
             }
+
         })
         .finally(function () {
             $this.parents(".modal").modal("hide");
