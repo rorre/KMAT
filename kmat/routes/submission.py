@@ -40,8 +40,9 @@ def delete_submission(s: Submission):
     db.session.delete(s)
     db.session.commit()
 
-    os.remove(os.path.join(data_path, s.anon_path))
-    os.remove(os.path.join(data_path, s.file_path))
+    # Remove all leading slash before attempting to join
+    os.remove(os.path.join(data_path, s.anon_path[1:]))
+    os.remove(os.path.join(data_path, s.file_path[1:]))
 
 
 @blueprint.route("/submit", methods=["GET", "POST"])
