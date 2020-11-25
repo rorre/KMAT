@@ -119,6 +119,8 @@ def submit():
         form=form,
         submitted_entry=submitted_entry,
         title="Submit",
+        admin_mode=current_user.has_access("admin")
+        and current_app.config["STATUS"] != "mapping",
     )
 
 

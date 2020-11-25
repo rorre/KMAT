@@ -41,5 +41,9 @@ def listing():
 
     submissions.sort(key=lambda x: x.score, reverse=True)
     return render_template(
-        "pages/result/listing.html", submissions=submissions, title="Results"
+        "pages/result/listing.html",
+        submissions=submissions,
+        title="Results",
+        admin_mode=current_user.has_access("admin")
+        and current_app.config["STATUS"] != "end",
     )

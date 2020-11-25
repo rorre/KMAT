@@ -39,7 +39,11 @@ def listing():
                 s.my_judging = judging
 
     return render_template(
-        "pages/judge/listing.html", submissions=submissions, title="Judge"
+        "pages/judge/listing.html",
+        submissions=submissions,
+        title="Judge",
+        admin_mode=current_user.has_access("admin")
+        and current_app.config["STATUS"] != "judging",
     )
 
 
