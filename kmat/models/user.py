@@ -48,7 +48,7 @@ class User(BaseModel):
         )
 
     def has_access(self, permission):
-        for role in self.roles:
+        for role in self.roles.values():
             if getattr(role, permission):
                 return True
 
