@@ -113,7 +113,7 @@ def init_oauth(app, oauth):
         authorize_url="https://osu.ppy.sh/oauth/authorize",
         access_token_url="https://osu.ppy.sh/oauth/token",
         client_kwargs=dict(
-            scope="public identify",
+            scope="identify",
         ),
     )
     oauth.init_app(app, fetch_token=fetch_token)
