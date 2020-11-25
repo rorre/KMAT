@@ -59,6 +59,10 @@ hr {
     background-color: #2e2d35;
 }
 
+.img-thumbnail {
+    max-width: 50px;
+    border: none;
+}
 
 /* The following code was taken from
    https://bootsnipp.com/snippets/xrKXW */
