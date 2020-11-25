@@ -50,8 +50,12 @@ def create_app(config_file="config.json"):
     app.register_blueprint(user.blueprint)
     app.register_blueprint(results.blueprint)
 
-    @app.errorhandler(403)
+    @app.errorhandler(401)
     def unauthorized(e):
+        return render_template("401.html"), 401
+
+    @app.errorhandler(403)
+    def forbidden(e):
         return render_template("403.html"), 403
 
     @app.errorhandler(404)
