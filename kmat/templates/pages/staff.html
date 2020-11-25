@@ -10,10 +10,10 @@
         <div class="col-md-8">
             <div class="card-body">
                 <h5 class="card-title">{{ staff.username }}</h5>
-                {% for role in staff.roles %}
-                <span class="badge badge-secondary" style="color: #{{ role.role_color }};">
-                    {{ role.name }}
-                </span>
+                {% for role in staff.roles.values() if role.name != "Default" %}
+                <h5><span class="badge badge-secondary" style="color: #{{ role.role_color }};">
+                        {{ role.name }}
+                    </span></h5>
                 {% endfor %}
             </div>
         </div>
