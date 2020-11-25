@@ -55,6 +55,9 @@ class Judging(BaseModel):
 
 
 class Submission(BaseModel):
+    def __repr__(self) -> str:
+        return f"<Submission(anon_name='{self.anon_name}')>"
+
     id = db.Column(db.String, primary_key=True, nullable=False, default=generate_id)
     mapper: "User"
 

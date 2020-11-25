@@ -21,6 +21,9 @@ role_association = db.Table(
 class User(BaseModel):
     __tablename__ = "users"
 
+    def __repr__(self) -> str:
+        return f"<User(osu_uid='{self.osu_uid}', username='{self.username}')>"
+
     #########################
     # osu! API + Authlib
     #########################
@@ -70,6 +73,9 @@ class User(BaseModel):
 
 
 class Role(BaseModel):
+    def __repr__(self) -> str:
+        return f"<Role(name='{self.name}')>"
+
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String)
     role_color = db.Column(db.String(6), default="FFFFFF")
