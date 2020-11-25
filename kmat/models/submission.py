@@ -76,7 +76,7 @@ class Submission(BaseModel):
     judgings = db.relationship(
         "Judging",
         backref="submission",
-        lazy=True,
+        lazy=False,
         cascade="all,delete,delete-orphan",
     )
 
