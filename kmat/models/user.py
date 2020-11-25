@@ -64,8 +64,8 @@ class User(BaseModel):
     roles = db.relationship(
         "Role",
         secondary=role_association,
-        lazy="subquery",
-        backref=db.backref("users", lazy=True),
+        lazy=True,
+        backref=db.backref("users", lazy=False),
         collection_class=attribute_mapped_collection("name"),
     )
     submissions = db.relationship(

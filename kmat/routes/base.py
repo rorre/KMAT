@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app, render_template, send_from_directory
 
-from kmat.models import User
+from kmat.models import Role
 
 blueprint = Blueprint("base", __name__)
 
@@ -17,8 +17,19 @@ def info():
 
 @blueprint.route("/staff")
 def staff():
-    staffs = User.query.filter(User.roles.any(admin=True)).all()
-    judges = User.query.filter(User.roles.any(judge=True)).all()
+    # Not using User.query because in terms of performance, it will be 100x
+    # more awful than this one.
+    staff_roles = Role.query.filter_by(admin=True).all()
+    judge_roles = Role.query.filter_by(judge=True).all()
+
+    staffs = []
+    for role in staff_roles:
+        staffs.extend(list(role.users))
+
+    judges = []
+    for role in judge_roles:
+        judges.extend(list(role.users))
+
     return render_template(
         "pages/staff.html",
         title="Staff",
