@@ -72,6 +72,7 @@ class Submission(BaseModel):
     difficulty = db.Column(db.String)
     submitted_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     anon_name = db.Column(db.String, unique=True)
+    total_score = db.Column(db.Float, default=0.0)
 
     judgings = db.relationship(
         "Judging",
