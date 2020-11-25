@@ -30,6 +30,9 @@ def staff():
     for role in judge_roles:
         judges.extend(list(role.users))
 
+    judges = list(set(judges))
+    staffs = list(set(staffs))
+
     return render_template(
         "pages/staff.html",
         title="Staff",
