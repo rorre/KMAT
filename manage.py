@@ -74,8 +74,8 @@ def setup_database(ctx: click.Context):
 @click.argument("role_id", type=int)
 def set_role(user_id: int, role_id: int):
     u = User.query.get(user_id)
-    admin_role = Role.query.get(role_id)
-    u.roles.append(admin_role)
+    target_role = Role.query.get(role_id)
+    u.roles[target_role.name] = target_role
     db.session.commit()
 
 
