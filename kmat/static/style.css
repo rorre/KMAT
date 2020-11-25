@@ -38,6 +38,11 @@ hr {
     border-top: 1px solid rgba(30, 30, 30, 0.75);
 }
 
+.turbolinks-progress-bar {
+    height: 5px;
+    background-color: rgb(190, 0, 190, 0.75);
+}
+
 /* The following code was taken from
    https://bootsnipp.com/snippets/xrKXW */
 ul.timeline {
