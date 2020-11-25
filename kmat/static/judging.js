@@ -40,7 +40,16 @@ $(".save-button").on('click', function (event) {
 
     var submissionid = $form.find("input[name='submissionId']").val();
     axios.post(submissionid, formJSON)
-        .then(function () { flash("Done!"); })
+        .then(function () {
+            flash("Done!");
+            $modal = $this.parents(".modal")
+            var modalId = $modal.attr("id")
+            var $badge = $(`li[data-target='#${modalId}'`).find("span")
+
+            $badge.removeClass("badge-danger")
+            $badge.addClass("badge-success")
+            $badge.html("Judged")
+        })
         .catch(function (error) {
             if (error.response) {
                 flash("An error has occured.", "danger")
