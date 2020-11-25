@@ -46,6 +46,7 @@ class Judging(BaseModel):
         backref="judging",
         lazy=True,
         collection_class=attribute_mapped_collection("criteria.value"),
+        cascade="all,delete,delete-orphan",
     )
 
     submission_id = db.Column(
@@ -72,6 +73,11 @@ class Submission(BaseModel):
     submitted_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     anon_name = db.Column(db.String, unique=True)
 
-    judgings = db.relationship("Judging", backref="submission", lazy=True)
+    judgings = db.relationship(
+        "Judging",
+        backref="submission",
+        lazy=True,
+        cascade="all,delete,delete-orphan",
+    )
 
     mapper_id = db.Column(db.Integer, db.ForeignKey("users.osu_uid"), nullable=False)

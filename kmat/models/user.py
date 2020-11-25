@@ -68,8 +68,18 @@ class User(BaseModel):
         backref=db.backref("users", lazy=True),
         collection_class=attribute_mapped_collection("name"),
     )
-    submissions = db.relationship("Submission", backref="mapper", lazy=True)
-    judgings = db.relationship("Judging", backref="judge", lazy=True)
+    submissions = db.relationship(
+        "Submission",
+        backref="mapper",
+        lazy=True,
+        cascade="all,delete,delete-orphan",
+    )
+    judgings = db.relationship(
+        "Judging",
+        backref="judge",
+        lazy=True,
+        cascade="all,delete,delete-orphan",
+    )
 
 
 class Role(BaseModel):
