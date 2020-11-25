@@ -48,7 +48,7 @@ def authorize():
     this_user.access_token = token["access_token"]
     this_user.refresh_token = token.get("refresh_token")
     this_user.expires_at = token["expires_in"]
-    this_user.roles.append(default_role)
+    this_user.roles[default_role.name] = default_role
 
     db.session.add(this_user)
     db.session.commit()
