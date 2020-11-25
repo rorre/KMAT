@@ -2,7 +2,7 @@ import os
 import traceback
 from typing import Optional
 
-from flask import Blueprint, current_app, redirect, render_template, url_for, abort
+from flask import Blueprint, abort, current_app, redirect, render_template, url_for
 from flask.helpers import flash
 from flask_login import current_user, login_required
 from flask_wtf import FlaskForm

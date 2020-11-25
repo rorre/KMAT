@@ -1,13 +1,12 @@
 __version__ = "0.1.0"
 
 import json
+from urllib.parse import unquote
 
 from flask import Flask, flash, redirect, render_template, url_for
 from flask_admin.contrib.sqla import ModelView
 from flask_bootstrap import Bootstrap
 from flask_login import current_user
-
-from urllib.parse import unquote
 
 
 def create_app(config_file="config.json"):
@@ -43,7 +42,7 @@ def create_app(config_file="config.json"):
     admin.add_view(AdminView(Submission, db.session, endpoint="/submission"))
     admin.add_view(AdminView(Role, db.session, endpoint="/role"))
 
-    from kmat.routes import base, submission, user, judge, results
+    from kmat.routes import base, judge, results, submission, user
 
     app.register_blueprint(base.blueprint)
     app.register_blueprint(judge.blueprint)

@@ -1,7 +1,8 @@
-from typing import List, TYPE_CHECKING
+from typing import TYPE_CHECKING, List
+
+from sqlalchemy.orm.collections import attribute_mapped_collection
 
 from kmat.plugins import db, login_manager
-from sqlalchemy.orm.collections import attribute_mapped_collection
 
 if TYPE_CHECKING:
     from flask_sqlalchemy.model import Model

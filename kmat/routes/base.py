@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, send_from_directory, current_app
+from flask import Blueprint, current_app, render_template, send_from_directory
 
 from kmat.models import User
 

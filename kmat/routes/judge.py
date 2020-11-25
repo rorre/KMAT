@@ -1,12 +1,13 @@
+from typing import Any, Dict, List, Union
+
+from flask import Blueprint, abort, render_template, request
 from flask.globals import current_app
 from flask.helpers import flash, url_for
-from werkzeug.utils import redirect
-from kmat.models.submission import CriteriaEnum, Judging, Score
-from typing import Any, Dict, List, Union
-from flask import Blueprint, render_template, request, abort
 from flask_login import current_user
+from werkzeug.utils import redirect
 
 from kmat.models import Submission
+from kmat.models.submission import CriteriaEnum, Judging, Score
 from kmat.plugins import db
 
 blueprint = Blueprint("judge", __name__, url_prefix="/judge")

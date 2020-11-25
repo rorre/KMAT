@@ -1,6 +1,7 @@
-from flask.globals import current_app
 from typing import List
-from flask import Blueprint, render_template, abort
+
+from flask import Blueprint, abort, render_template
+from flask.globals import current_app
 from flask_login import current_user
 
 from kmat.models import Submission

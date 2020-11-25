@@ -1,14 +1,16 @@
+import enum
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-import enum
-from sqlalchemy.sql.sqltypes import Enum
 from sqlalchemy.orm.collections import attribute_mapped_collection
+from sqlalchemy.sql.sqltypes import Enum
+
 from kmat.helper import generate_id
 from kmat.plugins import db
 
 if TYPE_CHECKING:
     from flask_sqlalchemy.model import Model
+
     from kmat.models import User
 
     BaseModel = db.make_declarative_base(Model)
