@@ -15,6 +15,9 @@ blueprint = Blueprint("judge", __name__, url_prefix="/judge")
 
 @blueprint.before_request
 def check_access():
+    if not current_user.is_authenticated:
+        return abort(401)
+
     if not current_user.has_access("admin"):
         if not current_user.has_access("judge"):
             return abort(403)
@@ -67,11 +70,13 @@ def judge(submission_id: str):
     else:
         judging_obj.comment = js["comment"]
 
+    judge_score = 0.0
     scores = []
     score: Dict[str, Union[str, int]]
     for score in js["scores"]:
         score["criteria"] = CriteriaEnum(score["name"])
-        score["score"] = score["value"]
+        score["score"] = float(score["value"])
+        judge_score += score["score"]
         del score["name"]
         del score["value"]
 
@@ -92,6 +97,7 @@ def judge(submission_id: str):
 
         scores.append(score_obj)
 
+    submission.total_score = Submission.total_score + judge_score
     db.session.add_all(scores)
     db.session.commit()
 

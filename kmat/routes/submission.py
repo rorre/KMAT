@@ -19,6 +19,9 @@ blueprint = Blueprint("submission", __name__, url_prefix="/submission")
 
 @blueprint.before_request
 def check_access():
+    if not current_user.is_authenticated:
+        return abort(401)
+
     if not current_user.has_access("admin"):
         if not current_user.has_access("submit"):
             return abort(403)
