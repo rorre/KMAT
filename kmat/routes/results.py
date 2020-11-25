@@ -3,8 +3,8 @@ from typing import List
 from flask import Blueprint, abort, render_template
 from flask.globals import current_app
 from flask_login import current_user
-
 from kmat.models import Submission
+from kmat.models.user import Role
 
 blueprint = Blueprint("result", __name__, url_prefix="/result")
 
@@ -18,6 +18,8 @@ def check_access():
 @blueprint.route("/")
 def listing():
     submissions: List[Submission] = Submission.query.all()
+    judges = Role.query.filter_by(judge=True).first().users
+
     for s in submissions:
         score = 0.0
         criteria_scores = {
@@ -26,10 +28,14 @@ def listing():
             "creativity": 0,
             "hitsound": 0,
         }
+        checked_judges = []
 
         for j in s.judgings:
             for criteria, score in j.scores.items():
                 criteria_scores[criteria] += score.score
+            checked_judges.append(j.judge)
+
+        s.missing_judges = set(judges) - set(checked_judges)
         s.score = sum(criteria_scores.values())
         s.criteria_scores = criteria_scores
 

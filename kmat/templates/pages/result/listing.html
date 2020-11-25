@@ -18,6 +18,15 @@
                     Download submission
                 </a>
 
+                {% if submission.missing_judges %}
+                <p class="mb-0">Missing judges:</p>
+                <ul>
+                    {% for j in submission.missing_judges %}
+                    <li>{{ j.username }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
                 {% for judging in submission.judgings %}
                 <div>
                     <strong>{{ judging.judge.username }}</strong>
