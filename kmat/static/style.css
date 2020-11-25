@@ -43,6 +43,23 @@ hr {
     background-color: rgb(190, 0, 190, 0.75);
 }
 
+.page-item.disabled .page-link {
+    background-color: #26242c;
+}
+
+.page-item.active .page-link {
+    background-color: #2e2d35;
+}
+
+.page-item .page-link {
+    background-color: #424046;
+}
+
+.page-item:hover .page-link {
+    background-color: #2e2d35;
+}
+
+
 /* The following code was taken from
    https://bootsnipp.com/snippets/xrKXW */
 ul.timeline {

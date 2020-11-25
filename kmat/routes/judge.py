@@ -30,8 +30,10 @@ def handle_error(e):
 
 @blueprint.route("/")
 def listing():
-    submissions: List[Submission] = Submission.query.all()
-    for s in submissions:
+    page = request.args.get("page", 1, type=int)
+    submissions: List[Submission] = Submission.query.paginate(page, 10)
+
+    for s in submissions.items:
         s.has_judged = False
         for judging in s.judgings:
             if judging.judge.osu_uid == current_user.osu_uid:
