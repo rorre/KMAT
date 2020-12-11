@@ -6,6 +6,8 @@ import time
 import zipfile
 from typing import IO, List, Union
 
+from flask import current_app
+
 import slider
 from slider.beatmap import Beatmap, GameMode
 
@@ -24,6 +26,15 @@ def generate_name() -> str:
     a = random.choice(ADJECTIVES)
     b = random.choice(ANIMALS)
     return f"{a} {b}"
+
+def is_valid_metadata(bmap: slider.Beatmap):
+    valid_metadata = current_app["metadata"]
+    return (
+        bmap.title == valid_metadata["title"] and
+        bmap.artist == valid_metadata["artist"] and
+        bmap.title_unicode == valid_metadata["title_unicode"] and
+        bmap.artist_unicode == valid_metadata["artist_unicode"]
+    )
 
 
 def prepare_osz(file: IO[bytes], target_zip: StrPath, mapper_name: str):
@@ -53,6 +64,9 @@ def prepare_osz(file: IO[bytes], target_zip: StrPath, mapper_name: str):
 
         if not highest_diff[-1]:
             raise ValueError("No osu!standard difficulty found.")
+        
+        if is_valid_metadata(highest_diff[-1]):
+            return ValueError("Metadata is not valid.")
 
         # Diffname rule.
         valid_diffnames = ["easy", "normal", "hard", "insane", "expert", "extra"]
