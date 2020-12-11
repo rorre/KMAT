@@ -19,10 +19,10 @@ else:
 
 
 class CriteriaEnum(enum.Enum):
-    MusicalRepresentation = "musicRepr"
-    Gameplay = "gameplay"
+    Expertise = "expertise"
+    Cohesion = "cohesion"
     Creativity = "creativity"
-    Hitsounding = "hitsound"
+    Impression = "impression"
 
 
 class Score(BaseModel):
