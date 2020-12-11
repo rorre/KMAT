@@ -1,5 +1,6 @@
-from flask import Blueprint, current_app, render_template, send_from_directory
-
+from flask import Blueprint, current_app, render_template, send_from_directory, redirect
+from flask.helpers import url_for
+from flask_login import current_user
 from kmat.models import Role
 
 blueprint = Blueprint("base", __name__)
@@ -7,7 +8,8 @@ blueprint = Blueprint("base", __name__)
 
 @blueprint.route("/")
 def index():
-    return render_template("pages/index.html")
+    return render_template("pages/blank_index.html")
+    #return render_template("pages/index.html")
 
 
 @blueprint.route("/informasi")

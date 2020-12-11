@@ -60,6 +60,7 @@
 
         <div id="dropdownTarget" class="navbar-collapse collapse">
             <ul class="navbar-nav mr-auto">
+                <!--
                 <li class="nav-item"><a href="{{ url_for('base.index') }}" class="nav-link small">
                         Home
                     </a>
@@ -72,6 +73,7 @@
                         Staff
                     </a>
                 </li>
+                -->
                 {% if ( config['STATUS'] == 'mapping' and
                         current_user.is_authenticated and
                         current_user.has_access("submit") ) or

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block header %}
+<div class="py-5 text-center">
+    <h2>Kompetisi Mapping Akhir Tahun</h2>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center pb-3">
+    {% if not current_user.is_authenticated %}
+    <a href="{{ url_for('user.login') }}" id="login" class="btn btn-primary">Log in dengan osu!</a>
+    {% elif ( config['STATUS'] == 'mapping' and
+                 current_user.is_authenticated and
+                 current_user.has_access("submit") ) %}
+    <a href="{{ config['BASE_OSZ_URL'] }}" class="btn btn-primary mx-1">
+        <i class="fa fa-download" aria-hidden="true"></i>
+    Unduh base osz
+    </a>
+    <a href="{{ url_for('submission.submit') }}" id="login" class="btn btn-primary mx-1">
+        <i class="fa fa-upload" aria-hidden="true"></i>
+        Submit entry
+    </a>
+    {% endif %}
+</div>
+{% endblock %}
